@@ -57,8 +57,8 @@ using System.Text;
 using testProject;
 
 
-string sourceFile = @"C:\oldFile.pdf";
-string descFile = @"C:\157.pdf";
+string sourceFile = @"C:\2000.pdf";
+string descFile = @"C:\20001.pdf";
 PDFEdit pdfObj = new PDFEdit();
 pdfObj.ReplaceTextInPDF(sourceFile, descFile, "#SIGNATURE #", "");
 //var reader = new PdfReader(sourceFile);

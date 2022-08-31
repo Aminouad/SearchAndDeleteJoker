@@ -1,7 +1,9 @@
-﻿using iTextSharp.text;
+﻿using iText.PdfCleanup;
+using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -34,6 +36,7 @@ namespace testProject
                 {
                     //Opens the unmodified PDF for reading
                     PdfReader reader = new PdfReader(inputPdfStream);
+
                     //Creates a stamper to put an image on the original pdf
                     PdfStamper stamper = new PdfStamper(reader, outputPdfStream); //{ FormFlattening = true, FreeTextFlattening = true };
                     for (var i = 1; i <= reader.NumberOfPages; i++)
@@ -49,6 +52,13 @@ namespace testProject
                             Console.WriteLine(searchResult[0].X);
                             Console.WriteLine(searchResult[0].Y);
                             var p = searchResult[0];
+
+
+                            IList<iTextSharp.xtra.iTextSharp.text.pdf.pdfcleanup.PdfCleanUpLocation> cleanUpLocations = new List<iTextSharp.xtra.iTextSharp.text.pdf.pdfcleanup.PdfCleanUpLocation>();
+                            cleanUpLocations.Add(new iTextSharp.xtra.iTextSharp.text.pdf.pdfcleanup.PdfCleanUpLocation(i, new iTextSharp.text.Rectangle(p.X, p.Y - 8, p.X + 85, p.Y - 8 + 20), iTextSharp.text.BaseColor.WHITE));
+                            iTextSharp.xtra.iTextSharp.text.pdf.pdfcleanup.PdfCleanUpProcessor cleaner = new iTextSharp.xtra.iTextSharp.text.pdf.pdfcleanup.PdfCleanUpProcessor(cleanUpLocations, stamper);
+                            cleaner.CleanUp();
+
                             Bitmap transparentBitmap = new Bitmap(85, 20);
                             iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(transparentBitmap, BaseColor.WHITE);
                             //Sets the position that the image needs to be placed (ie the location of the text to be removed)
